@@ -1,0 +1,23 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare": "nitropack prepare",
+    "dev": "nitropack dev --host",
+    "build": "nitropack build",
+    "preview": "node .output/server/index.mjs",
+    "typeorm": "typeorm-ts-node-esm -d ormconfig.ts"
+  },
+  "dependencies": {
+    "nitropack": "^2.8.1",
+    "reflect-metadata": "^0.1.13",
+    "sqlite3": "^5.0.2",
+    "typeorm": "0.3.20"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.10",
+    "rollup-plugin-typescript2": "^0.36.0",
+    "ts-node": "10.9.1",
+    "typescript": "^5.3.3"
+  }
+}

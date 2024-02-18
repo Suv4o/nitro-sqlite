@@ -1,0 +1,17 @@
+{
+  "date": "2024-02-18T09:53:41.151Z",
+  "preset": "nitro-dev",
+  "framework": {
+    "name": "nitro",
+    "version": "2.8.1"
+  },
+  "versions": {
+    "nitro": "2.8.1"
+  },
+  "dev": {
+    "pid": 35714,
+    "workerAddress": {
+      "socketPath": "/var/folders/qr/nq2ty72d1w3g3lmj40sdm5nr0000gn/T/nitro/worker-35714-4.sock"
+    }
+  }
+}
