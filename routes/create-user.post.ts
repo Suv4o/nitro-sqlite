@@ -1,11 +1,13 @@
-import initializeDatabase from "../middleware/1-initialize-database";
-import destroyDatabase from "../middleware/2-destroy-database";
+import createUserDto from "../dtos/create-user.dto";
 
 export default defineEventHandler({
-  onRequest: [initializeDatabase],
-  onBeforeResponse: [destroyDatabase],
+  onRequest: [createUserDto],
   async handler(event) {
-    const body = await readBody(event);
-    return await createUser(body);
+    try {
+      const body = await readBody(event);
+      return await createUser(body);
+    } catch (error) {
+      // return error;
+    }
   },
 });

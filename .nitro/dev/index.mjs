@@ -17,6 +17,7 @@ import { parseURL, withoutBase, joinURL, getQuery, withQuery } from 'file:///Use
 import { createStorage, prefixStorage } from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/unstorage/dist/index.mjs';
 import unstorage_47drivers_47fs from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/unstorage/drivers/fs.mjs';
 import { toRouteMatcher, createRouter } from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/radix3/dist/index.mjs';
+import { IsString, IsNotEmpty, IsAlpha, IsNumber, Max, validateOrReject } from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/class-validator/cjs/index.js';
 import { PrimaryGeneratedColumn, Column, Entity, DataSource } from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/typeorm/index.mjs';
 
 const inlineAppConfig = {};
@@ -530,9 +531,9 @@ function getRouteRulesForPath(path) {
   return defu({}, ..._routeRulesMatcher.matchAll(path).reverse());
 }
 
-const plugins = [
-  
-];
+function defineNitroPlugin(def) {
+  return def;
+}
 
 function defineNitroErrorHandler(handler) {
   return handler;
@@ -680,23 +681,24 @@ const dataSource = new DataSource({
   migrations: [CreateUserTable1708245318068]
 });
 
-const initializeDatabase = defineEventHandler(async () => {
-  await dataSource.initialize();
+const _1W0FZJGlml = defineNitroPlugin((nitro) => {
+  nitro.hooks.hook("request", async () => {
+    await dataSource.initialize();
+  });
+  nitro.hooks.hook("beforeResponse", async () => {
+    await dataSource.destroy();
+  });
 });
-const initializeDatabase$1 = initializeDatabase;
 
-const destroyDatabase = defineEventHandler(async () => {
-  await dataSource.destroy();
-});
-const destroyDatabase$1 = destroyDatabase;
+const plugins = [
+  _1W0FZJGlml
+];
 
 const _lazy_EyhyPD = () => Promise.resolve().then(function () { return createUser_post$1; });
 const _lazy_3h8Sco = () => Promise.resolve().then(function () { return _id__get$1; });
 const _lazy_bWCT9f = () => Promise.resolve().then(function () { return getUsers_get$1; });
 
 const handlers = [
-  { route: '', handler: initializeDatabase$1, lazy: false, middleware: true, method: undefined },
-  { route: '', handler: destroyDatabase$1, lazy: false, middleware: true, method: undefined },
   { route: '/create-user', handler: _lazy_EyhyPD, lazy: true, middleware: false, method: "post" },
   { route: '/get-user/:id', handler: _lazy_3h8Sco, lazy: true, middleware: false, method: "get" },
   { route: '/get-users', handler: _lazy_bWCT9f, lazy: true, middleware: false, method: "get" }
@@ -891,12 +893,50 @@ async function getUser(id) {
   }
 }
 
+class CreateUserDto {
+}
+__decorate([
+  IsString(),
+  IsNotEmpty(),
+  IsAlpha(),
+  __metadata("design:type", String)
+], CreateUserDto.prototype, "firstName", void 0);
+__decorate([
+  IsString(),
+  IsNotEmpty(),
+  IsAlpha(),
+  __metadata("design:type", String)
+], CreateUserDto.prototype, "lastName", void 0);
+__decorate([
+  IsNumber(),
+  IsNotEmpty(),
+  Max(99),
+  __metadata("design:type", Number)
+], CreateUserDto.prototype, "age", void 0);
+const createUserDto = defineEventHandler(async (event) => {
+  const userRequestBody = await readBody(event);
+  const user = new CreateUserDto();
+  user.firstName = userRequestBody.firstName;
+  user.lastName = userRequestBody.lastName;
+  user.age = userRequestBody.age;
+  try {
+    await validateOrReject(user);
+  } catch (errors) {
+    const res = event.node.res;
+    res.statusCode = 400;
+    res.end(JSON.stringify(errors, null, 2));
+  }
+});
+const createUserDto$1 = createUserDto;
+
 const createUser_post = defineEventHandler({
-  onRequest: [initializeDatabase$1],
-  onBeforeResponse: [destroyDatabase$1],
+  onRequest: [createUserDto$1],
   async handler(event) {
-    const body = await readBody(event);
-    return await createUser(body);
+    try {
+      const body = await readBody(event);
+      return await createUser(body);
+    } catch (error) {
+    }
   }
 });
 
@@ -906,8 +946,6 @@ const createUser_post$1 = /*#__PURE__*/Object.freeze({
 });
 
 const _id__get = defineEventHandler({
-  onRequest: [initializeDatabase$1],
-  onBeforeResponse: [destroyDatabase$1],
   async handler(event) {
     const userId = Number(getRouterParam(event, "id"));
     return await getUser(userId);
@@ -920,8 +958,6 @@ const _id__get$1 = /*#__PURE__*/Object.freeze({
 });
 
 const getUsers_get = defineEventHandler({
-  onRequest: [initializeDatabase$1],
-  onBeforeResponse: [destroyDatabase$1],
   async handler() {
     return await getUsers();
   }

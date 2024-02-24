@@ -9,6 +9,7 @@
     "typeorm": "typeorm-ts-node-esm -d ormconfig.ts"
   },
   "dependencies": {
+    "class-validator": "^0.14.1",
     "nitropack": "^2.8.1",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.0.2",
