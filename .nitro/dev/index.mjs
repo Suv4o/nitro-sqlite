@@ -5,6 +5,12 @@ import { mkdirSync } from 'node:fs';
 import { parentPort, threadId } from 'node:worker_threads';
 import { provider, isWindows } from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/std-env/dist/index.mjs';
 import { defineEventHandler, handleCacheHeaders, splitCookiesString, isEvent, createEvent, getRequestHeader, eventHandler, setHeaders, sendRedirect, proxyRequest, setResponseStatus, setResponseHeader, send, createApp, createRouter as createRouter$1, toNodeListener, fetchWithEvent, lazyEventHandler, readBody, getRouterParam } from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/h3/dist/index.mjs';
+import { IsString, IsNotEmpty, IsAlpha, IsNumber, Max, validateOrReject } from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/class-validator/cjs/index.js';
+import { PrimaryGeneratedColumn, Column, Entity, DataSource } from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/typeorm/index.mjs';
+import { hash } from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/ohash/dist/index.mjs';
+import { parseURL, withoutBase, joinURL, getQuery, withQuery } from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/ufo/dist/index.mjs';
+import { createStorage, prefixStorage } from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/unstorage/dist/index.mjs';
+import unstorage_47drivers_47fs from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/unstorage/drivers/fs.mjs';
 import { createFetch as createFetch$1, Headers as Headers$1 } from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/ofetch/dist/node.mjs';
 import destr from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/destr/dist/index.mjs';
 import { createCall, createFetch } from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/unenv/runtime/fetch/index.mjs';
@@ -12,13 +18,7 @@ import { createHooks } from 'file:///Users/Suv4o/Development/Blog-Projects/nitro
 import { snakeCase } from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/scule/dist/index.mjs';
 import { klona } from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/klona/dist/index.mjs';
 import defu, { defuFn } from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/defu/dist/defu.mjs';
-import { hash } from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/ohash/dist/index.mjs';
-import { parseURL, withoutBase, joinURL, getQuery, withQuery } from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/ufo/dist/index.mjs';
-import { createStorage, prefixStorage } from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/unstorage/dist/index.mjs';
-import unstorage_47drivers_47fs from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/unstorage/drivers/fs.mjs';
 import { toRouteMatcher, createRouter } from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/radix3/dist/index.mjs';
-import { IsString, IsNotEmpty, IsAlpha, IsNumber, Max, validateOrReject } from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/class-validator/cjs/index.js';
-import { PrimaryGeneratedColumn, Column, Entity, DataSource } from 'file:///Users/Suv4o/Development/Blog-Projects/nitro-sqlite/node_modules/typeorm/index.mjs';
 
 const inlineAppConfig = {};
 
@@ -945,11 +945,9 @@ const createUser_post$1 = /*#__PURE__*/Object.freeze({
       default: createUser_post
 });
 
-const _id__get = defineEventHandler({
-  async handler(event) {
-    const userId = Number(getRouterParam(event, "id"));
-    return await getUser(userId);
-  }
+const _id__get = defineEventHandler(async (event) => {
+  const userId = Number(getRouterParam(event, "id"));
+  return await getUser(userId);
 });
 
 const _id__get$1 = /*#__PURE__*/Object.freeze({
@@ -957,10 +955,11 @@ const _id__get$1 = /*#__PURE__*/Object.freeze({
       default: _id__get
 });
 
-const getUsers_get = defineEventHandler({
-  async handler() {
-    return await getUsers();
-  }
+const getUsers_get = defineCachedEventHandler(async () => {
+  return await getUsers();
+}, {
+  maxAge: 10
+  /* 10 seconds */
 });
 
 const getUsers_get$1 = /*#__PURE__*/Object.freeze({
