@@ -3,9 +3,9 @@ POST http://localhost:3000/create-user HTTP/1.1
 Content-Type: application/json
 
 {
-    "firstName": "Nikola",
+    "firstName": "Nicole",
     "lastName": "Tesla",
-    "age": 43
+    "age": 101
 }
 
 ### Get Users

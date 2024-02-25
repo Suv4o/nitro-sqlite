@@ -932,11 +932,8 @@ const createUserDto$1 = createUserDto;
 const createUser_post = defineEventHandler({
   onRequest: [createUserDto$1],
   async handler(event) {
-    try {
-      const body = await readBody(event);
-      return await createUser(body);
-    } catch (error) {
-    }
+    const body = await readBody(event);
+    return await createUser(body);
   }
 });
 
