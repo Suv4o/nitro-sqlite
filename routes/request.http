@@ -5,7 +5,7 @@ Content-Type: application/json
 {
     "firstName": "Nicole",
     "lastName": "Tesla",
-    "age": 101
+    "age": 34
 }
 
 ### Get Users
