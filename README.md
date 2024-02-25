@@ -1,42 +1,19 @@
-# Nitro Minimal Starter
+# Create a Web Server using Nitro, SQLite and TypeORM
 
-Look at the [Nitro documentation](https://nitro.unjs.io/) to learn more.
+These examples are part of my blog post [Create a Web Server using Nitro, SQLite and TypeORM](https://www.trpkovski.com/2024/25/02/create-a-web-server-using-nitro-sqlite-and-typeorm). Please refer to the blog article for detailed explanation.
 
-## Setup
+![Hero image](https://res.cloudinary.com/suv4o/image/upload/q_auto,f_auto,w_1200,e_sharpen:100/v1708844513/blog/create-a-web-server-using-nitro-sqlite-and-typeorm/create-a-web-server-using-nitro-sqlite-and-typeorm_ozdamt)
 
-Make sure to install the dependencies:
+# Getting started with the project
 
-```bash
-# npm
-npm install
-
-# yarn
-yarn install
-
-# pnpm
-pnpm install
-```
-
-## Development Server
-
-Start the development server on <http://localhost:3000>
+## Install dependencies
 
 ```bash
-npm run dev
+yarn
 ```
 
-## Production
-
-Build the application for production:
+## Run the project
 
 ```bash
-npm run build
+yarn dev
 ```
-
-Locally preview production build:
-
-```bash
-npm run preview
-```
-
-Check out the [deployment documentation](https://nitro.unjs.io/deploy) for more information.
